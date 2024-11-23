@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,9 +23,25 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@*": [
+        "./*"
+      ]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app/_components/Group/Create.tsx",
+    "app/_components/Group/Edit.tsx",
+    "app/_components/Group/Group.tsx",
+    "app/_components/Group/index.tsx",
+    "app/_components/Group/MemberTabletjsx",
+    "app/_components/Group/users.tsx",
+    "app/_components/loader.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
