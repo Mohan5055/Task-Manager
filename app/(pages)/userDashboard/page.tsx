@@ -12,11 +12,9 @@ interface Task {
   isCompleted: boolean;
 }
 
-interface TaskCardsProps {
-  userId: string;
-}
 
-const TaskCards: React.FC<TaskCardsProps> = () => {
+
+const TaskCards = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [error, setError] = useState<string | null>(null);
 

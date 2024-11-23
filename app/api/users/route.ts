@@ -6,7 +6,7 @@ import Task from "@app/_model/task.model";
 import {  NextRequest, NextResponse } from "next/server";
 
 
-export async function GET(req: NextResponse) {
+export async function GET() {
     DB()
     try {
         const result = await userModel.find();

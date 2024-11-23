@@ -1,7 +1,4 @@
 
-
-
-
 "use client";
 
 import Sidebar from "@app/_components/Sidebar";

@@ -9,12 +9,12 @@ import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 
-type CreateUserProps = {
-    isModalOpen: boolean;
-    toggleModal: () => void;
-};
+// type CreateUserProps = {
+//     isModalOpen: boolean;
+//     toggleModal: () => void;
+// };
 
-const CreateUser: React.FC<CreateUserProps> = () => {
+const CreateUser = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [disabled, setDisabled] = useState(false);
     const { register, handleSubmit, reset, formState: { errors } } = useForm();

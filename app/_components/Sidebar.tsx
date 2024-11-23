@@ -1,9 +1,7 @@
 
-
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FaBars, FaCaretDown, FaUserCircle } from "react-icons/fa";
-import { RiDashboardFill } from "react-icons/ri";
 import ls from "localstorage-slim";
 import { deleteCookie } from "cookies-next";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
@@ -54,29 +52,6 @@ const Sidebar: React.FC = () => {
               {isOpen ? "APCO " : ""}
             </span>
           </div>
-          {/* Navigation Links */}
-          <div className="flex flex-col space-y-4">
-            {role === "user" && (
-              <div>
-              <div
-                className="flex items-center p-2 hover:bg-gray-200 rounded cursor-pointer"
-                // onClick={() => router.push("/userdashboard")}
-                >
-                <RiDashboardFill className="mr-2 text-purple-600" size={24} />
-                {isOpen && <span className="text-gray-700">Dashboard</span>}
-              </div>
-              <div
-                className="flex items-center p-2 hover:bg-gray-200 rounded cursor-pointer"
-                // onClick={() => router.push("/form")}
-                >
-                <RiDashboardFill className="mr-2 text-purple-600" size={24} />
-                {isOpen && <span className="text-gray-700">Task</span>}
-              </div>
-              </div>
-            )}
-          </div>
-
-          {/* User Info and Logout */}
           <div className="absolute bottom-6 left-0 w-full px-4">
             <Popover className="py-5 border-t-[1px] border-t-gray-300 flex items-center gap-x-3 relative">
               <PopoverButton className="cursor-pointer">

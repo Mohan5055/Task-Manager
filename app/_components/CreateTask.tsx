@@ -1,4 +1,4 @@
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { RiCloseLine } from "react-icons/ri";
@@ -14,7 +14,7 @@ const CreateTask = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data:any) => {
+  const onSubmit = (data: any) => {
     console.log("Form Data: ", data);
     // Add API call or further processing logic here
   };
@@ -53,9 +53,9 @@ const CreateTask = () => {
                 className="w-full p-1 outline-none"
               />
             </div>
-            {errors.taskname && (
+            {errors.taskname?.message && (
               <p className="text-red-500 text-sm mt-1">
-                {errors.taskname.message}
+                {String(errors.taskname.message)}
               </p>
             )}
           </div>
@@ -71,7 +71,7 @@ const CreateTask = () => {
                 className="w-full p-1 outline-none"
               />
             </div>
-            {errors.task && (
+            {errors.task?.message && typeof errors.task.message === 'string' && (
               <p className="text-red-500 text-sm mt-1">{errors.task.message}</p>
             )}
           </div>

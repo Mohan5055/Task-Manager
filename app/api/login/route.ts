@@ -38,7 +38,7 @@ export async function POST(req: Request) {
     }
 }   
 
-export async function GET(req: Request, res: NextResponse) {
+export async function GET(req: Request,) {
     try {
         DB();
         const user: any = JSON.parse(req.headers.get('user') as string);
