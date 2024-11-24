@@ -6,5 +6,6 @@ export interface ITask extends mongoose.Document {
   taskName: string;
   description: string;
   isCompleted: boolean;
+  isStarted:boolean,
   createdAt: Date;
 }

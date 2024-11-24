@@ -3,13 +3,60 @@ import DB from "@app/_database/db";
 import Task from "@app/_model/task.model";
 import User from "@app/_model/user.model"; // Assuming User model exists for email lookup
 
+// export async function POST(req: NextRequest) {
+//   // Initialize DB connection
+//   await DB();
+
+//   try {
+//     const body = await req.json(); // Parse JSON body
+//     const { email, taskName, description ,isCompleted,phase} = body;
+
+//     // Find user by email
+//     const user = await User.findOne({ email });
+//     if (!user) {
+//       return NextResponse.json({ message: "User not found" }, { status: 404 });
+//     }
+
+//     // Create and save the task
+//     const newTask = new Task({
+//       userId: user._id,
+//       taskName,
+//       description,
+//       isCompleted,
+//       phase
+//     });
+
+//     await newTask.save();
+
+//     return NextResponse.json(
+//       { message: "Task assigned successfully!", task: newTask },
+//       { status: 201 }
+//     );
+//   } catch (error) {
+//     console.error("Error assigning task:", error);
+//     return NextResponse.json(
+//       { message: "Error assigning task"},
+//       { status: 500 }
+//     );
+//   }
+// }
+
+
 export async function POST(req: NextRequest) {
   // Initialize DB connection
   await DB();
 
   try {
     const body = await req.json(); // Parse JSON body
-    const { email, taskName, description ,isCompleted} = body;
+    const { email, taskName, description, isCompleted, isStarted } = body;
+
+    // Validate required fields
+    if (!email || !taskName || !description) {
+      return NextResponse.json(
+        { message: "Email, taskName, and description are required." },
+        { status: 400 }
+      );
+    }
 
     // Find user by email
     const user = await User.findOne({ email });
@@ -22,11 +69,13 @@ export async function POST(req: NextRequest) {
       userId: user._id,
       taskName,
       description,
-      isCompleted,
+      isCompleted: isCompleted || false, // Default to false if not provided
+      isStarted: isStarted || false, // Default to false if not provided
     });
 
     await newTask.save();
 
+    // Return success response
     return NextResponse.json(
       { message: "Task assigned successfully!", task: newTask },
       { status: 201 }

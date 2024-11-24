@@ -217,22 +217,25 @@ const Admin = () => {
                   <th className="border border-gray-300 px-4 py-2">Action</th>
                 </tr>
               </thead>
+
               <tbody>
                 {showUsers.length > 0 ? (
                   showUsers.map((item: any, index) => (
-                    <tr key={item._id} className="text-center">
-                      <td className="border border-gray-300 px-4 py-2">{index + 1}</td>
-                      <td className="border border-gray-300 px-4 py-2">{item.name}</td>
-                      <td className="border border-gray-300 px-4 py-2">{item.email}</td>
-                      <td className="border border-gray-300 px-4 py-2">
-                        <button
-                          onClick={() => fetchUserTasks(item._id)}
-                          className="px-4 py-2 bg-blue-500 text-white rounded-lg"
-                        >
-                          View Tasks
-                        </button>
-                      </td>
-                    </tr>
+                    item.userRole !== 'admin' && ( // Skip rendering the row if userRole is admin
+                      <tr key={item._id} className="text-center">
+                        <td className="border border-gray-300 px-4 py-2">{index + 1}</td>
+                        <td className="border border-gray-300 px-4 py-2">{item.name}</td>
+                        <td className="border border-gray-300 px-4 py-2">{item.email}</td>
+                        <td className="border border-gray-300 px-4 py-2">
+                          <button
+                            onClick={() => fetchUserTasks(item._id)}
+                            className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+                          >
+                            View Tasks
+                          </button>
+                        </td>
+                      </tr>
+                    )
                   ))
                 ) : (
                   <tr>
@@ -255,6 +258,7 @@ const Admin = () => {
                   </button>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
                   {userTasks.map((task: any, index) => (
                     <div
                       key={index}
@@ -263,15 +267,23 @@ const Admin = () => {
                       <h4 className="text-md font-semibold">{task.taskName}</h4>
                       <p>{task.description}</p>
                       <p
-                        className={`mt-2 text-sm font-bold ${task.isCompleted ? "text-green-500" : "text-red-500"
+                        className={`mt-2 text-sm font-bold ${task.isCompleted
+                          ? "text-green-500"
+                          : task.isStarted
+                            ? "text-yellow-500"
+                            : "text-red-500"
                           }`}
                       >
-                        {task.isCompleted ? "Completed" : "Incomplete"}
+                        {task.isCompleted
+                          ? "Completed"
+                          : task.isStarted
+                            ? "Starting"
+                            : "Incomplete"}
                       </p>
                       <div className="flex justify-between mt-4">
                         <button
                           onClick={() => handleEditTask(task._id)}
-                          className="px-2 py-1 bg-yellow-400 text-white rounded-full flex items-center"
+                          className="px-2 py-1 bg-yellow-500 text-white rounded-full flex items-center"
                         >
                           <AiFillEdit size={16} />
                         </button>

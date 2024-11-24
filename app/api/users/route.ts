@@ -35,7 +35,48 @@ export async function PUT(req: NextRequest) {
     }
   }
   
+
+  // export async function PATCH(req: Request) {
+  //   try {
+  //     await DB(); // Ensure the database connection is established
   
+  //     // Parse the request body
+  //     const body = await req.json();
+  //     const { id } = body; // Expect `_id` of the task to be passed in the request body
+  
+  //     // Validate required fields
+  //     if (!id) {
+  //       return NextResponse.json(
+  //         { error: "The id field is required." },
+  //         { status: 400 }
+  //       );
+  //     }
+  
+  //     // Update the task in the database
+  //     const updatedTask = await Task.findByIdAndUpdate(
+  //       id,
+  //       { isCompleted: true }, // Set `isCompleted` to true
+  //       { new: true } // Return the updated document
+  //     );
+  
+  //     if (!updatedTask) {
+  //       return NextResponse.json(
+  //         { error: "Task not found." },
+  //         { status: 404 }
+  //       );
+  //     }
+  
+  //     // Return the updated task
+  //     return NextResponse.json(updatedTask, { status: 200 });
+  //   } catch (error: any) {
+  //     console.error("Error updating task:", error.message || error);
+  //     return NextResponse.json(
+  //       { error: "Failed to update task", details: error.message || error },
+  //       { status: 500 }
+  //     );
+  //   }
+  // }
+
 
 
   export async function PATCH(req: Request) {
@@ -54,19 +95,29 @@ export async function PUT(req: NextRequest) {
         );
       }
   
-      // Update the task in the database
-      const updatedTask = await Task.findByIdAndUpdate(
-        id,
-        { isCompleted: true }, // Set `isCompleted` to true
-        { new: true } // Return the updated document
-      );
+      // Find the task by ID
+      const task = await Task.findById(id);
   
-      if (!updatedTask) {
+      if (!task) {
         return NextResponse.json(
           { error: "Task not found." },
           { status: 404 }
         );
       }
+  
+      // Update the task's phase based on its current state
+      if (!task.isStarted && !task.isCompleted) {
+        // Transition from "incomplete" to "starting phase"
+        task.isStarted = true;
+        task.isCompleted = false;
+      } else if (task.isStarted && !task.isCompleted) {
+        // Transition from "starting phase" to "completed phase"
+        task.isStarted = false;
+        task.isCompleted = true;
+      }
+  
+      // Save the updated task
+      const updatedTask = await task.save();
   
       // Return the updated task
       return NextResponse.json(updatedTask, { status: 200 });
@@ -78,8 +129,5 @@ export async function PUT(req: NextRequest) {
       );
     }
   }
-
-
-
-
+  
 

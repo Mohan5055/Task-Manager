@@ -1,3 +1,5 @@
+
+
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -10,16 +12,15 @@ interface Task {
   taskName: string;
   description: string;
   isCompleted: boolean;
+  isStarted: boolean;
 }
-
-
 
 const TaskCards = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const userId = ls.get("i", { encrypt: true });
-  console.log("userId",userId)
+  console.log("userId", userId);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -27,7 +28,7 @@ const TaskCards = () => {
         const response = await axios.put<Task[]>(
           `${process.env.NEXT_PUBLIC_BASE_URL}/users?id=${userId}`
         );
-        console.log("response.data",response.data)
+        console.log("response.data", response.data);
         setTasks(response.data);
         setError(null);
       } catch (err) {
@@ -39,24 +40,31 @@ const TaskCards = () => {
     fetchTasks();
   }, [userId]);
 
-  const handleCompleteTask = async (taskId: string) => {
-    console.log("Task ID to complete:", taskId);
+  const handleTaskClick = async (taskId: string) => {
+    console.log("Task ID to update:", taskId);
     try {
       const response = await axios.patch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/users`, // Ensure correct API route
         { id: taskId } // Send the task ID in the request body
       );
-  
+
       if (response.status === 200) {
+        const updatedTask = response.data;
         setTasks((prevTasks) =>
           prevTasks.map((task) =>
-            task._id === taskId ? { ...task, isCompleted: true } : task
+            task._id === taskId
+              ? {
+                  ...task,
+                  isStarted: updatedTask.isStarted,
+                  isCompleted: updatedTask.isCompleted,
+                }
+              : task
           )
         );
       }
     } catch (err) {
-      console.error("Error completing task:", err);
-      setError("Failed to complete task");
+      console.error("Error updating task:", err);
+      setError("Failed to update task");
     }
   };
 
@@ -82,12 +90,18 @@ const TaskCards = () => {
                     className={`mt-4 px-4 py-2 rounded-md text-white font-medium ${
                       task.isCompleted
                         ? "bg-green-500 cursor-not-allowed"
+                        : task.isStarted
+                        ? "bg-yellow-500 hover:bg-yellow-600"
                         : "bg-red-500 hover:bg-red-600"
                     }`}
-                    onClick={() => handleCompleteTask(task._id)}
+                    onClick={() => handleTaskClick(task._id)}
                     disabled={task.isCompleted}
                   >
-                    {task.isCompleted ? "Completed" : "Complete Task"}
+                    {task.isCompleted
+                      ? "Completed"
+                      : task.isStarted
+                      ? "Starting"
+                      : "Incomplete"}
                   </button>
                 </div>
               ))}
@@ -100,5 +114,3 @@ const TaskCards = () => {
 };
 
 export default TaskCards;
-
-
